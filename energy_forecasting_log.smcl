@@ -1,0 +1,1087 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\mary\Documents\energy_forecasting\energy_forecasting_log.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}21 Jun 2026, 13:01:27
+{txt}
+{com}. 
+. * Set working directory
+. * cd "C:\Users\mary\Documents\energy_forecasting"
+. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 1. DATA IMPORT & CLEANING
+. *
+. import delimited "energy_data.csv", clear varnames(1)
+{res}{text}(14 vars, 84 obs)
+
+{com}. 
+. * Inspect
+. describe
+
+{txt}Contains data
+  obs:{res}            84                          
+{txt} vars:{res}            14                          
+{txt} size:{res}         4,368                          
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:year           }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:month          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:date_str       }{txt}{bind: str7    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:generation_gwh }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:demand_gwh     }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:peak_demand_mw }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:capacity_mw    }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:hydro_gwh      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:thermal_gwh    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:load_factor_pct}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:unmet_demand_~h}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:system_losses~t}{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:rainfall_mm    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:gdp_index      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by: 
+{res}     Note: Dataset has changed since last saved.
+{txt}
+{com}. summarize
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 8}year {c |}{res}         84        2021    2.012012       2018       2024
+{txt}{space 7}month {c |}{res}         84         6.5    3.472786          1         12
+{txt}{space 4}date_str {c |}{res}          0
+{txt}generation~h {c |}{res}         84    290.6888    36.04686     222.84     352.49
+{txt}{space 2}demand_gwh {c |}{res}         84     329.311    17.61672      292.4        371
+{txt}{hline 13}{c +}{hline 57}
+peak_deman~w {c |}{res}         84     751.506    47.22322      645.6      864.2
+{txt}{space 1}capacity_mw {c |}{res}         84         444           0        444        444
+{txt}{space 3}hydro_gwh {c |}{res}         84    270.5598    35.35246     198.42     326.68
+{txt}{space 1}thermal_gwh {c |}{res}         84    20.12893    4.743089      12.01         28
+{txt}load_facto~t {c |}{res}         84    53.77024     6.13291      42.17      63.83
+{txt}{hline 13}{c +}{hline 57}
+unmet_dema~h {c |}{res}         84    39.23333     31.7484          0      93.85
+{txt}system_los~t {c |}{res}         84     18.3894    2.086352      15.02      21.97
+{txt}{space 1}rainfall_mm {c |}{res}         84    80.74405    48.06585          0      172.9
+{txt}{space 3}gdp_index {c |}{res}         84      115.65     9.26824      97.73      131.9
+{txt}
+{com}. list in 1/5
+
+     {txt}{c TLC}{hline 6}{c TT}{hline 7}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TRC}
+  1. {c |} year {c |} month {c |} date_str {c |} genera~h {c |} demand~h {c |} peak_d~w {c |} capaci~w {c |} hydro_~h {c |} therma~h {c |} load_f~t {c |} unmet_~h {c |}
+     {c |} {res}2018 {txt}{c |} {res}    1 {txt}{c |} {res} 2018m01 {txt}{c |} {res}  274.62 {txt}{c |} {res}  293.55 {txt}{c |} {res}     692 {txt}{c |} {res}     444 {txt}{c |} {res}  258.22 {txt}{c |} {res}    16.4 {txt}{c |} {res}   55.12 {txt}{c |} {res}   18.93 {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 7}{c BT}{hline 10}{c BT}{hline 10}{c BT}{c TT}{hline 9}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 5}{c TT}{hline 4}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 10}{c RT}
+     {c |}              system~t               {c |}              rainfa~m               {c |}              gdp_in~x               {c |}
+     {c |}              {res}   16.56               {txt}{c |}              {res}    56.5               {txt}{c |}              {res}   97.73               {txt}{c |}
+     {c BLC}{hline 37}{c BT}{hline 37}{c BT}{hline 37}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 7}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TRC}
+  2. {c |} year {c |} month {c |} date_str {c |} genera~h {c |} demand~h {c |} peak_d~w {c |} capaci~w {c |} hydro_~h {c |} therma~h {c |} load_f~t {c |} unmet_~h {c |}
+     {c |} {res}2018 {txt}{c |} {res}    2 {txt}{c |} {res} 2018m02 {txt}{c |} {res}  301.45 {txt}{c |} {res}  306.82 {txt}{c |} {res}   703.6 {txt}{c |} {res}     444 {txt}{c |} {res}  288.97 {txt}{c |} {res}   12.48 {txt}{c |} {res}   59.51 {txt}{c |} {res}    5.37 {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 7}{c BT}{hline 10}{c BT}{hline 10}{c BT}{c TT}{hline 9}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 5}{c TT}{hline 4}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 10}{c RT}
+     {c |}              system~t               {c |}              rainfa~m               {c |}              gdp_in~x               {c |}
+     {c |}              {res}   16.53               {txt}{c |}              {res}   123.9               {txt}{c |}              {res}  100.51               {txt}{c |}
+     {c BLC}{hline 37}{c BT}{hline 37}{c BT}{hline 37}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 7}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TRC}
+  3. {c |} year {c |} month {c |} date_str {c |} genera~h {c |} demand~h {c |} peak_d~w {c |} capaci~w {c |} hydro_~h {c |} therma~h {c |} load_f~t {c |} unmet_~h {c |}
+     {c |} {res}2018 {txt}{c |} {res}    3 {txt}{c |} {res} 2018m03 {txt}{c |} {res}  310.42 {txt}{c |} {res}  306.47 {txt}{c |} {res}   728.7 {txt}{c |} {res}     444 {txt}{c |} {res}  294.89 {txt}{c |} {res}   15.53 {txt}{c |} {res}   59.17 {txt}{c |} {res}       0 {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 7}{c BT}{hline 10}{c BT}{hline 10}{c BT}{c TT}{hline 9}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 5}{c TT}{hline 4}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 10}{c RT}
+     {c |}              system~t               {c |}              rainfa~m               {c |}              gdp_in~x               {c |}
+     {c |}              {res}   19.12               {txt}{c |}              {res}   172.9               {txt}{c |}              {res}  100.85               {txt}{c |}
+     {c BLC}{hline 37}{c BT}{hline 37}{c BT}{hline 37}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 7}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TRC}
+  4. {c |} year {c |} month {c |} date_str {c |} genera~h {c |} demand~h {c |} peak_d~w {c |} capaci~w {c |} hydro_~h {c |} therma~h {c |} load_f~t {c |} unmet_~h {c |}
+     {c |} {res}2018 {txt}{c |} {res}    4 {txt}{c |} {res} 2018m04 {txt}{c |} {res}  317.49 {txt}{c |} {res}   318.6 {txt}{c |} {res}   715.7 {txt}{c |} {res}     444 {txt}{c |} {res}     303 {txt}{c |} {res}   14.49 {txt}{c |} {res}   61.61 {txt}{c |} {res}    1.11 {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 7}{c BT}{hline 10}{c BT}{hline 10}{c BT}{c TT}{hline 9}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 5}{c TT}{hline 4}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 10}{c RT}
+     {c |}              system~t               {c |}              rainfa~m               {c |}              gdp_in~x               {c |}
+     {c |}              {res}    21.7               {txt}{c |}              {res}   144.4               {txt}{c |}              {res}  101.44               {txt}{c |}
+     {c BLC}{hline 37}{c BT}{hline 37}{c BT}{hline 37}{c BRC}
+
+     {c TLC}{hline 6}{c TT}{hline 7}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TT}{hline 10}{c TRC}
+  5. {c |} year {c |} month {c |} date_str {c |} genera~h {c |} demand~h {c |} peak_d~w {c |} capaci~w {c |} hydro_~h {c |} therma~h {c |} load_f~t {c |} unmet_~h {c |}
+     {c |} {res}2018 {txt}{c |} {res}    5 {txt}{c |} {res} 2018m05 {txt}{c |} {res}  319.56 {txt}{c |} {res}  332.08 {txt}{c |} {res}   764.4 {txt}{c |} {res}     444 {txt}{c |} {res}  294.64 {txt}{c |} {res}   24.91 {txt}{c |} {res}   58.07 {txt}{c |} {res}   12.53 {txt}{c |}
+     {c LT}{hline 6}{c BT}{hline 7}{c BT}{hline 10}{c BT}{hline 10}{c BT}{c TT}{hline 9}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 5}{c TT}{hline 4}{c BT}{hline 10}{c BT}{hline 10}{c BT}{hline 10}{c RT}
+     {c |}              system~t               {c |}              rainfa~m               {c |}              gdp_in~x               {c |}
+     {c |}              {res}   20.11               {txt}{c |}              {res}   151.7               {txt}{c |}              {res}  101.32               {txt}{c |}
+     {c BLC}{hline 37}{c BT}{hline 37}{c BT}{hline 37}{c BRC}
+
+{com}. 
+. * Generate Stata time variable (monthly)
+. gen t = ym(year, month)
+{txt}
+{com}. format t %tm
+{txt}
+{com}. tsset t, monthly
+{res}{txt}{col 9}time variable:  {res}{col 25}t, 2018m1 to 2024m12
+{txt}{col 17}delta:  {res}1 month
+{txt}
+{com}. 
+. label var t                 "Time (monthly)"
+{txt}
+{com}. label var generation_gwh    "Total generation (GWh)"
+{txt}
+{com}. label var demand_gwh        "Total demand (GWh)"
+{txt}
+{com}. label var peak_demand_mw    "Peak demand (MW)"
+{txt}
+{com}. label var capacity_mw       "Installed capacity (MW)"
+{txt}
+{com}. label var hydro_gwh         "Hydro generation (GWh)"
+{txt}
+{com}. label var thermal_gwh       "Thermal generation (GWh)"
+{txt}
+{com}. label var load_factor_pct   "Load factor (%)"
+{txt}
+{com}. label var unmet_demand_gwh  "Unmet demand (GWh)"
+{txt}
+{com}. label var system_losses_pct "System losses (%)"
+{txt}
+{com}. label var rainfall_mm       "Monthly rainfall (mm)"
+{txt}
+{com}. label var gdp_index         "GDP index (2018=100)"
+{txt}
+{com}. 
+. * Check for missing values
+. misstable summarize
+{txt}(variables nonmissing or string)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 2. COMPUTE OPERATIONAL KPIs
+. *
+. 
+. * 2.1 Generation adequacy ratio (generation / demand)
+. gen adequacy_ratio = generation_gwh / demand_gwh
+{txt}
+{com}. label var adequacy_ratio "Generation adequacy ratio"
+{txt}
+{com}. 
+. * 2.2 Capacity utilisation (generation vs installed capacity equivalent)
+. *     Installed capacity MWh/month = capacity_mw * 24 * 30 / 1000
+. gen capacity_util_pct = (generation_gwh / (capacity_mw * 24 * 30 / 1000)) * 100
+{txt}
+{com}. label var capacity_util_pct "Capacity utilisation (%)"
+{txt}
+{com}. 
+. * 2.3 Energy access gap (unmet demand as % of total demand)
+. gen access_gap_pct = (unmet_demand_gwh / demand_gwh) * 100
+{txt}
+{com}. label var access_gap_pct "Energy access gap (%)"
+{txt}
+{com}. 
+. * 2.4 Hydro dependency ratio
+. gen hydro_share_pct = (hydro_gwh / generation_gwh) * 100
+{txt}
+{com}. label var hydro_share_pct "Hydro share of generation (%)"
+{txt}
+{com}. 
+. * 2.5 Supply reliability index (100 - access_gap_pct)
+. gen reliability_idx = 100 - access_gap_pct
+{txt}
+{com}. label var reliability_idx "Supply reliability index"
+{txt}
+{com}. 
+. * 2.6 Year-on-year demand growth rate
+. sort t
+{txt}
+{com}. gen demand_growth_yoy = (demand_gwh - l12.demand_gwh) / l12.demand_gwh * 100
+{txt}(12 missing values generated)
+
+{com}. label var demand_growth_yoy "Year-on-year demand growth (%)"
+{txt}
+{com}. 
+. * 2.7 12-month rolling average demand
+. tssmooth ma demand_ma12 = demand_gwh, window(6 1 6)
+{txt}The smoother applied was
+{res}{p 5 5 5}(1/13)*[x(t-6) + x(t-5) + x(t-4) + x(t-3) + x(t-2) + x(t-1) + 1*x(t) + x(t+1) + x(t+2) + x(t+3) + x(t+4) + x(t+5) + ...; x(t)= demand_gwh{p_end}
+{txt}
+{com}. label var demand_ma12 "12-month centred moving average demand"
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 3. KPI MONITORING SUMMARY TABLE
+. *
+. * Annual averages
+. preserve
+{txt}
+{com}.     collapse (mean) generation_gwh demand_gwh peak_demand_mw ///
+>              adequacy_ratio capacity_util_pct access_gap_pct ///
+>              hydro_share_pct reliability_idx system_losses_pct ///
+>              (sum) unmet_demand_gwh, by(year)
+{txt}
+{com}. 
+.     * Round for reporting
+.     foreach v of varlist adequacy_ratio capacity_util_pct access_gap_pct ///
+>                          hydro_share_pct reliability_idx system_losses_pct {c -(}
+{txt}  2{com}.         replace `v' = round(`v', 0.01)
+{txt}  3{com}.     {c )-}
+{txt}(7 real changes made)
+(7 real changes made)
+(7 real changes made)
+(7 real changes made)
+(7 real changes made)
+(7 real changes made)
+
+{com}.     foreach v of varlist generation_gwh demand_gwh unmet_demand_gwh {c -(}
+{txt}  2{com}.         replace `v' = round(`v', 1)
+{txt}  3{com}.     {c )-}
+{txt}(7 real changes made)
+(7 real changes made)
+(7 real changes made)
+
+{com}. 
+.     list year generation_gwh demand_gwh adequacy_ratio ///
+>          capacity_util_pct access_gap_pct reliability_idx, ///
+>          separator(0) noobs clean
+{txt}
+    {res}year   genera~h   demand~h   adequa~o   capaci~t   access~t   reliab~x {txt} 
+    {res}2018        279        311         .9      87.39      10.45      89.55 {txt} 
+    {res}2019        285        319        .89      89.03      10.94      89.06 {txt} 
+    {res}2020        290        323         .9      90.69      10.75      89.25 {txt} 
+    {res}2021        284        330        .86      88.99      14.07      85.93 {txt} 
+    {res}2022        298        334        .89      93.33      10.94      89.06 {txt} 
+    {res}2023        298        340        .87       93.1      12.55      87.45 {txt} 
+    {res}2024        300        348        .86      93.98      13.72      86.28 {txt} 
+
+{com}. 
+.     export delimited "kpi_annual_summary.csv", replace
+{res}{txt}file kpi_annual_summary.csv saved
+
+{com}. restore
+{txt}
+{com}. 
+. *
+. * 4. EXPLORATORY DATA ANALYSIS
+. *
+. 
+. * 4.1 Time series plots
+. tsline demand_gwh generation_gwh, ///
+>     title("Malawi: Monthly Energy Demand vs Generation, 2018–2024") ///
+>     subtitle("GWh per month") ///
+>     ytitle("GWh") xtitle("Month") ///
+>     legend(label(1 "Demand") label(2 "Generation")) ///
+>     lcolor(navy red) lwidth(medthick medthick) ///
+>     graphregion(color(white)) bgcolor(white)
+{res}{txt}
+{com}. graph export "fig1_demand_vs_generation.png", replace width(1200)
+{txt}(file fig1_demand_vs_generation.png written in PNG format)
+
+{com}. 
+. * 4.2 Unmet demand trend
+. tsline unmet_demand_gwh, ///
+>     title("Monthly Unmet Energy Demand, 2018–2024") ///
+>     ytitle("GWh") xtitle("Month") ///
+>     lcolor(red) lwidth(medthick) ///
+>     yline(0, lcolor(gray) lpattern(dash)) ///
+>     graphregion(color(white)) bgcolor(white)
+{res}{txt}
+{com}. graph export "fig2_unmet_demand.png", replace width(1200)
+{txt}(file fig2_unmet_demand.png written in PNG format)
+
+{com}. 
+. * 4.3 Seasonal decomposition — monthly means
+. preserve
+{txt}
+{com}.     collapse (mean) demand_gwh generation_gwh, by(month)
+{txt}
+{com}.     twoway (bar demand_gwh month, color(navy%70)) ///
+>            (bar generation_gwh month, color(red%70)), ///
+>         title("Average Monthly Demand & Generation by Calendar Month") ///
+>         subtitle("Seasonal pattern, 2018–2024 average") ///
+>         ytitle("Average GWh") xtitle("Month") ///
+>         xlabel(1(1)12, valuelabel) ///
+>         legend(label(1 "Demand") label(2 "Generation")) ///
+>         graphregion(color(white)) bgcolor(white)
+{p 0 4 2}
+{txt}(note:  named style
+navy % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+navy % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+navy % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+navy % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+navy % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+red % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+red % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+red % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+red % 70 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+red % 70 not found in class
+color,  default attributes used)
+{p_end}
+{res}{txt}
+{com}.     graph export "fig3_seasonal_pattern.png", replace width(1200)
+{txt}(file fig3_seasonal_pattern.png written in PNG format)
+
+{com}. restore
+{txt}
+{com}. 
+. * 4.4 Correlation matrix — key KPIs
+. correlate demand_gwh generation_gwh rainfall_mm gdp_index ///
+>           hydro_gwh system_losses_pct peak_demand_mw
+{txt}(obs=84)
+
+             {c |} demand~h genera~h rainfa~m gdp_in~x hydro_~h system~t peak_d~w
+{hline 13}{c +}{hline 63}
+  demand_gwh {c |}{res}   1.0000
+{txt}generation~h {c |}{res}   0.4332   1.0000
+ {txt}rainfall_mm {c |}{res}   0.2497   0.7990   1.0000
+   {txt}gdp_index {c |}{res}   0.6367   0.0974  -0.1226   1.0000
+   {txt}hydro_gwh {c |}{res}   0.4143   0.9914   0.7951   0.0826   1.0000
+{txt}system_los~t {c |}{res}  -0.1139   0.0125   0.0180  -0.1040   0.0065   1.0000
+{txt}peak_deman~w {c |}{res}   0.8182   0.3907   0.2611   0.4622   0.3781  -0.1808   1.0000
+
+{txt}
+{com}. 
+. * 4.5 Scatter: rainfall vs hydro generation
+. twoway (scatter hydro_gwh rainfall_mm, mcolor(navy%60) msize(small)) ///
+>        (lfit hydro_gwh rainfall_mm, lcolor(red) lwidth(medthick)), ///
+>     title("Rainfall vs Hydro Generation") ///
+>     ytitle("Hydro generation (GWh)") xtitle("Rainfall (mm)") ///
+>     legend(label(1 "Monthly obs") label(2 "Linear fit")) ///
+>     graphregion(color(white)) bgcolor(white)
+{p 0 4 2}
+{txt}(note:  named style
+navy % 60 not found in class
+color,  default attributes used)
+{p_end}
+{p 0 4 2}
+{txt}(note:  named style
+navy % 60 not found in class
+color,  default attributes used)
+{p_end}
+{res}{txt}
+{com}. graph export "fig4_rainfall_hydro.png", replace width(1200)
+{txt}(file fig4_rainfall_hydro.png written in PNG format)
+
+{com}. 
+. *
+. * 5. STATIONARITY TESTS
+. *
+. * 5.1 Augmented Dickey-Fuller test — demand
+. * H0: series has a unit root (non-stationary)
+. dfuller demand_gwh, regress lags(3)
+
+{txt}Augmented Dickey-Fuller test for unit root         Number of obs   = {res}       80
+
+{txt}{col 32}{hline 10} Interpolated Dickey-Fuller {hline 9}
+                  Test         1% Critical       5% Critical      10% Critical
+               Statistic           Value             Value             Value
+{hline 78}
+ Z(t)         {res}    -4.169            -3.538            -2.906            -2.588
+{txt}{hline 78}
+MacKinnon approximate p-value for Z(t) = {res}0.0007
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}D.demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}demand_gwh {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.3174004{col 26}{space 2} .0761262{col 37}{space 1}   -4.17{col 46}{space 3}0.000{col 54}{space 4}-.4690516{col 67}{space 3}-.1657492
+{txt}{space 9}LD. {c |}{col 14}{res}{space 2} .0979954{col 26}{space 2} .1079468{col 37}{space 1}    0.91{col 46}{space 3}0.367{col 54}{space 4}-.1170456{col 67}{space 3} .3130364
+{txt}{space 8}L2D. {c |}{col 14}{res}{space 2} .2838374{col 26}{space 2} .1101365{col 37}{space 1}    2.58{col 46}{space 3}0.012{col 54}{space 4} .0644343{col 67}{space 3} .5032405
+{txt}{space 8}L3D. {c |}{col 14}{res}{space 2} .2156067{col 26}{space 2} .1113478{col 37}{space 1}    1.94{col 46}{space 3}0.057{col 54}{space 4}-.0062095{col 67}{space 3} .4374229
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 104.7429{col 26}{space 2} 25.11417{col 37}{space 1}    4.17{col 46}{space 3}0.000{col 54}{space 4} 54.71288{col 67}{space 3} 154.7729
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. * If p > 0.05, difference the series
+. 
+. * 5.2 ADF on first difference
+. dfuller D.demand_gwh, regress lags(3)
+
+{txt}Augmented Dickey-Fuller test for unit root         Number of obs   = {res}       79
+
+{txt}{col 32}{hline 10} Interpolated Dickey-Fuller {hline 9}
+                  Test         1% Critical       5% Critical      10% Critical
+               Statistic           Value             Value             Value
+{hline 78}
+ Z(t)         {res}    -4.694            -3.539            -2.907            -2.588
+{txt}{hline 78}
+MacKinnon approximate p-value for Z(t) = {res}0.0001
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}D2.         {col 14}{c |}
+{col 1}  demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}demand_gwh {c |}
+{space 9}LD. {c |}{col 14}{res}{space 2} -1.00094{col 26}{space 2} .2132608{col 37}{space 1}   -4.69{col 46}{space 3}0.000{col 54}{space 4}-1.425871{col 67}{space 3}-.5760082
+{txt}{space 8}LD2. {c |}{col 14}{res}{space 2}-.0358011{col 26}{space 2} .1919147{col 37}{space 1}   -0.19{col 46}{space 3}0.853{col 54}{space 4}-.4181995{col 67}{space 3} .3465973
+{txt}{space 7}L2D2. {c |}{col 14}{res}{space 2} .1136122{col 26}{space 2} .1634075{col 37}{space 1}    0.70{col 46}{space 3}0.489{col 54}{space 4}-.2119845{col 67}{space 3} .4392088
+{txt}{space 7}L3D2. {c |}{col 14}{res}{space 2}  .146738{col 26}{space 2} .1154023{col 37}{space 1}    1.27{col 46}{space 3}0.208{col 54}{space 4} -.083206{col 67}{space 3} .3766821
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}  .084047{col 26}{space 2} 1.220691{col 37}{space 1}    0.07{col 46}{space 3}0.945{col 54}{space 4}-2.348232{col 67}{space 3} 2.516326
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. * 5.3 KPSS test (manual interpretation note)
+. * Stata does not have built-in KPSS; use zandrews as supplement
+. * zandrews demand_gwh, break(trend)
+. 
+. *
+. * 6. AUTOCORRELATION DIAGNOSTICS
+. *
+. * ACF and PACF — identify AR and MA orders
+. ac  demand_gwh, lags(24) title("ACF — Monthly Demand") ///
+>     graphregion(color(white)) bgcolor(white)
+{res}{txt}
+{com}. graph export "fig5_acf_demand.png", replace width(1000)
+{txt}(file fig5_acf_demand.png written in PNG format)
+
+{com}. 
+. pac demand_gwh, lags(24) title("PACF — Monthly Demand") ///
+>     graphregion(color(white)) bgcolor(white)
+{res}{txt}
+{com}. graph export "fig6_pacf_demand.png", replace width(1000)
+{txt}(file fig6_pacf_demand.png written in PNG format)
+
+{com}. 
+. * ACF on first difference
+. ac  D.demand_gwh, lags(24) title("ACF — First Difference of Demand") ///
+>     graphregion(color(white)) bgcolor(white)
+{res}{txt}
+{com}. graph export "fig7_acf_diff_demand.png", replace width(1000)
+{txt}(file fig7_acf_diff_demand.png written in PNG format)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 7. ARIMA / SARIMA MODEL FITTING
+. *
+. * Split: training = 2018m01–2023m12 (72 obs), test = 2024m01–2024m12 (12 obs)
+. * We fit on training data and forecast 2024 to evaluate accuracy,
+. * then refit on full data and forecast 2025.
+. 
+. * --- 7.1 Training window ---
+. gen train = (t <= tm(2023m12))
+{txt}
+{com}. 
+. * --- 7.2 Candidate models ---
+. 
+. * Model A: ARIMA(1,1,1) — baseline
+. arima demand_gwh if train, arima(1,1,1)
+
+{txt}(setting optimization to BHHH)
+{res}{txt}Iteration 0:{col 16}log likelihood = {res}-287.48192{txt}  
+{res}{txt}Iteration 1:{col 16}log likelihood = {res}-268.63177{txt}  
+{res}{txt}Iteration 2:{col 16}log likelihood = {res}-266.36835{txt}  
+{res}{txt}Iteration 3:{col 16}log likelihood = {res}-266.34803{txt}  (backed up)
+{res}{txt}Iteration 4:{col 16}log likelihood = {res}-266.34353{txt}  (backed up)
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 5:{col 16}log likelihood = {res}-266.34339{txt}  (backed up)
+{res}{txt}Iteration 6:{col 16}log likelihood = {res}-264.57933{txt}  
+{res}{txt}Iteration 7:{col 16}log likelihood = {res}-264.40257{txt}  
+{res}{txt}Iteration 8:{col 16}log likelihood = {res}-264.38642{txt}  
+{res}{txt}Iteration 9:{col 16}log likelihood = {res}-264.38561{txt}  
+{res}{txt}Iteration 10:{col 16}log likelihood = {res}-264.38555{txt}  
+{res}{txt}Iteration 11:{col 16}log likelihood = {res}-264.38555{txt}  
+{res}
+{txt}ARIMA regression
+
+Sample:  {res}2018m2 - 2023m12                       {txt}Number of obs     = {res}        71
+                                                {txt}Wald chi2({res}2{txt})      =  {res}    52.69
+{txt}Log likelihood = {res}-264.3856                      {txt}Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}      OPG
+{col 1}D.demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}demand_gwh   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .4481795{col 26}{space 2} .1855202{col 37}{space 1}    2.42{col 46}{space 3}0.016{col 54}{space 4} .0845667{col 67}{space 3} .8117923
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA         {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .7136926{col 26}{space 2} .1049399{col 37}{space 1}    6.80{col 46}{space 3}0.000{col 54}{space 4} .5080142{col 67}{space 3} .9193711
+{txt}{space 12} {c |}
+{space 10}ma {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}       -1{col 26}{space 2} .2059575{col 37}{space 1}   -4.86{col 46}{space 3}0.000{col 54}{space 4} -1.40367{col 67}{space 3}-.5963311
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+      /sigma {c |}{col 14}{res}{space 2} 9.843507{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 0 79}Note: The test of the variance against zero is one sided, and the two-sided confidence interval is truncated at zero.{p_end}
+
+{com}. estimates store model_A
+{txt}
+{com}. 
+. * Model B: ARIMA(2,1,1)
+. arima demand_gwh if train, arima(2,1,1)
+
+{txt}(setting optimization to BHHH)
+{res}{txt}Iteration 0:{col 16}log likelihood = {res}-284.57473{txt}  
+{res}{txt}Iteration 1:{col 16}log likelihood = {res}-272.71908{txt}  
+{res}{txt}Iteration 2:{col 16}log likelihood = {res}-272.29426{txt}  
+{res}{txt}Iteration 3:{col 16}log likelihood = {res} -272.1592{txt}  (backed up)
+{res}{txt}Iteration 4:{col 16}log likelihood = {res}-272.07582{txt}  (backed up)
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 5:{col 16}log likelihood = {res}-272.02268{txt}  (backed up)
+{res}{txt}Iteration 6:{col 16}log likelihood = {res}-268.68182{txt}  
+{res}{txt}Iteration 7:{col 16}log likelihood = {res}-268.52082{txt}  
+{res}{txt}Iteration 8:{col 16}log likelihood = {res}-268.50257{txt}  
+{res}{txt}Iteration 9:{col 16}log likelihood = {res}-268.47866{txt}  
+{res}{txt}Iteration 10:{col 16}log likelihood = {res}-268.38506{txt}  
+{res}{txt}Iteration 11:{col 16}log likelihood = {res}-268.37732{txt}  
+{res}{txt}Iteration 12:{col 16}log likelihood = {res}-268.28885{txt}  
+{res}{txt}Iteration 13:{col 16}log likelihood = {res}-268.22771{txt}  
+{res}{txt}Iteration 14:{col 16}log likelihood = {res}-268.16287{txt}  
+{res}{txt}(switching optimization to BHHH)
+{res}{txt}Iteration 15:{col 16}log likelihood = {res}-268.12437{txt}  
+{res}{txt}Iteration 16:{col 16}log likelihood = {res}-268.12291{txt}  (backed up)
+{res}{txt}Iteration 17:{col 16}log likelihood = {res}-268.11791{txt}  (backed up)
+{res}{txt}Iteration 18:{col 16}log likelihood = {res}-268.11451{txt}  (backed up)
+{res}{txt}Iteration 19:{col 16}log likelihood = {res} -268.1122{txt}  (backed up)
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 20:{col 16}log likelihood = {res}-268.11063{txt}  (backed up)
+{res}{txt}Iteration 21:{col 16}log likelihood = {res}-268.03793{txt}  
+{res}{txt}Iteration 22:{col 16}log likelihood = {res}-268.00635{txt}  
+{res}{txt}Iteration 23:{col 16}log likelihood = {res}-267.99992{txt}  
+{res}{txt}Iteration 24:{col 16}log likelihood = {res}-267.98245{txt}  
+{res}{txt}Iteration 25:{col 16}log likelihood = {res} -267.9767{txt}  
+{res}{txt}Iteration 26:{col 16}log likelihood = {res}-267.97184{txt}  
+{res}{txt}Iteration 27:{col 16}log likelihood = {res}-267.96962{txt}  
+{res}{txt}Iteration 28:{col 16}log likelihood = {res}-267.96571{txt}  
+{res}{txt}Iteration 29:{col 16}log likelihood = {res}-267.96056{txt}  
+{res}{txt}(switching optimization to BHHH)
+{res}{txt}Iteration 30:{col 16}log likelihood = {res}-267.95944{txt}  
+{res}{txt}Iteration 31:{col 16}log likelihood = {res}-267.95793{txt}  (backed up)
+{res}{txt}Iteration 32:{col 16}log likelihood = {res}-267.95708{txt}  (backed up)
+{res}{txt}Iteration 33:{col 16}log likelihood = {res}-267.95664{txt}  (backed up)
+{res}{txt}Iteration 34:{col 16}log likelihood = {res}-267.95645{txt}  (backed up)
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 35:{col 16}log likelihood = {res}-267.95639{txt}  (backed up)
+{res}{txt}Iteration 36:{col 16}log likelihood = {res}-267.95243{txt}  
+{res}{txt}Iteration 37:{col 16}log likelihood = {res}-267.95155{txt}  
+{res}{txt}Iteration 38:{col 16}log likelihood = {res} -267.9512{txt}  
+{res}{txt}Iteration 39:{col 16}log likelihood = {res}-267.95077{txt}  
+{res}{txt}Iteration 40:{col 16}log likelihood = {res}-267.95025{txt}  
+{res}{txt}Iteration 41:{col 16}log likelihood = {res}-267.94985{txt}  
+{res}{txt}Iteration 42:{col 16}log likelihood = {res}-267.94975{txt}  
+{res}{txt}Iteration 43:{col 16}log likelihood = {res}-267.94955{txt}  
+{res}{txt}Iteration 44:{col 16}log likelihood = {res}-267.94934{txt}  
+{res}{txt}(switching optimization to BHHH)
+{res}{txt}Iteration 45:{col 16}log likelihood = {res}-267.94916{txt}  
+{res}{txt}Iteration 46:{col 16}log likelihood = {res}  -267.949{txt}  
+{res}{txt}Iteration 47:{col 16}log likelihood = {res}-267.94896{txt}  
+{res}{txt}Iteration 48:{col 16}log likelihood = {res}-267.94896{txt}  
+{res}{txt}Iteration 49:{col 16}log likelihood = {res}-267.94893{txt}  (backed up)
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 50:{col 16}log likelihood = {res}-267.94893{txt}  
+{res}{txt}Iteration 51:{col 16}log likelihood = {res}-267.94857{txt}  
+{res}{txt}Iteration 52:{col 16}log likelihood = {res}-267.94842{txt}  
+{res}{txt}Iteration 53:{col 16}log likelihood = {res}-267.94839{txt}  
+{res}{txt}Iteration 54:{col 16}log likelihood = {res}-267.94834{txt}  
+{res}{txt}Iteration 55:{col 16}log likelihood = {res}-267.94831{txt}  
+{res}{txt}Iteration 56:{col 16}log likelihood = {res}-267.94829{txt}  
+{res}{txt}Iteration 57:{col 16}log likelihood = {res}-267.94828{txt}  
+{res}{txt}Iteration 58:{col 16}log likelihood = {res}-267.94827{txt}  
+{res}{txt}Iteration 59:{col 16}log likelihood = {res}-267.94826{txt}  
+{res}
+{txt}ARIMA regression
+
+Sample:  {res}2018m2 - 2023m12                       {txt}Number of obs     = {res}        71
+                                                {txt}Wald chi2({res}3{txt})      =  {res}     2.28
+{txt}Log likelihood = {res}-267.9483                      {txt}Prob > chi2       =     {res}0.5171
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}      OPG
+{col 1}D.demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}demand_gwh   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .4910123{col 26}{space 2} 1.516005{col 37}{space 1}    0.32{col 46}{space 3}0.746{col 54}{space 4}-2.480303{col 67}{space 3} 3.462328
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA         {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2} .0777675{col 26}{space 2} 1.076193{col 37}{space 1}    0.07{col 46}{space 3}0.942{col 54}{space 4}-2.031533{col 67}{space 3} 2.187068
+{txt}{space 9}L2. {c |}{col 14}{res}{space 2} .1280968{col 26}{space 2} .1372193{col 37}{space 1}    0.93{col 46}{space 3}0.351{col 54}{space 4}-.1408481{col 67}{space 3} .3970416
+{txt}{space 12} {c |}
+{space 10}ma {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-11.67021{col 26}{space 2} 142.1413{col 37}{space 1}   -0.08{col 46}{space 3}0.935{col 54}{space 4} -290.262{col 67}{space 3} 266.9215
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+      /sigma {c |}{col 14}{res}{space 2} .9025793{col 26}{space 2} 11.00334{col 37}{space 1}    0.08{col 46}{space 3}0.467{col 54}{space 4}        0{col 67}{space 3} 22.46873
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 0 79}Note: The test of the variance against zero is one sided, and the two-sided confidence interval is truncated at zero.{p_end}
+
+{com}. estimates store model_B
+{txt}
+{com}. 
+. * Model C: SARIMA(1,1,1)(1,1,0)s=12 — captures annual seasonality
+. arima demand_gwh if train, arima(1,1,1) sarima(1,1,0,12)
+
+{txt}(setting optimization to BHHH)
+{res}{txt}Iteration 0:{col 16}log likelihood = {res}-214.86072{txt}  
+{res}{txt}Iteration 1:{col 16}log likelihood = {res}-210.69943{txt}  
+{res}{txt}Iteration 2:{col 16}log likelihood = {res}-207.25015{txt}  
+{res}{txt}Iteration 3:{col 16}log likelihood = {res}-207.16335{txt}  
+{res}{txt}Iteration 4:{col 16}log likelihood = {res} -206.2923{txt}  
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 5:{col 16}log likelihood = {res}-206.29196{txt}  (backed up)
+{res}{txt}Iteration 6:{col 16}log likelihood = {res}-205.97636{txt}  
+{res}{txt}Iteration 7:{col 16}log likelihood = {res}-205.92461{txt}  
+{res}{txt}Iteration 8:{col 16}log likelihood = {res}-205.92028{txt}  
+{res}{txt}Iteration 9:{col 16}log likelihood = {res}-205.92017{txt}  
+{res}{txt}Iteration 10:{col 16}log likelihood = {res}-205.92017{txt}  
+{res}
+{txt}ARIMA regression
+
+Sample:  {res}2019m2 - 2023m12                       {txt}Number of obs     = {res}        59
+                                                {txt}Wald chi2({res}3{txt})      =  {res}    42.74
+{txt}Log likelihood = {res}-205.9202                      {txt}Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}DS12.       {col 14}{c |}{col 26}      OPG
+{col 1}  demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}demand_gwh   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}-.0274989{col 26}{space 2} .0465394{col 37}{space 1}   -0.59{col 46}{space 3}0.555{col 54}{space 4}-.1187144{col 67}{space 3} .0637166
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA         {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.1562202{col 26}{space 2} .1398302{col 37}{space 1}   -1.12{col 46}{space 3}0.264{col 54}{space 4}-.4302823{col 67}{space 3} .1178419
+{txt}{space 12} {c |}
+{space 10}ma {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-1.000001{col 26}{space 2} .2072832{col 37}{space 1}   -4.82{col 46}{space 3}0.000{col 54}{space 4}-1.406268{col 67}{space 3} -.593733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA12       {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.4460864{col 26}{space 2} .1267698{col 37}{space 1}   -3.52{col 46}{space 3}0.000{col 54}{space 4}-.6945507{col 67}{space 3} -.197622
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+      /sigma {c |}{col 14}{res}{space 2} 7.434648{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 0 79}Note: The test of the variance against zero is one sided, and the two-sided confidence interval is truncated at zero.{p_end}
+
+{com}. estimates store model_C
+{txt}
+{com}. 
+. * Model D: SARIMA(1,1,1)(0,1,1)s=12
+. arima demand_gwh if train, arima(1,1,1) sarima(0,1,1,12)
+
+{txt}(setting optimization to BHHH)
+{res}{txt}Iteration 0:{col 16}log likelihood = {res}-214.86072{txt}  
+{res}{txt}Iteration 1:{col 16}log likelihood = {res}-210.17071{txt}  
+{res}{txt}Iteration 2:{col 16}log likelihood = {res}-209.16638{txt}  
+{res}{txt}Iteration 3:{col 16}log likelihood = {res} -202.8113{txt}  
+{res}{txt}Iteration 4:{col 16}log likelihood = {res}-201.80743{txt}  
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 5:{col 16}log likelihood = {res}-200.99952{txt}  
+{res}{txt}Iteration 6:{col 16}log likelihood = {res}-200.84237{txt}  
+{res}{txt}Iteration 7:{col 16}log likelihood = {res}-200.68472{txt}  
+{res}{txt}Iteration 8:{col 16}log likelihood = {res}-200.64735{txt}  
+{res}{txt}Iteration 9:{col 16}log likelihood = {res}-200.53152{txt}  
+{res}{txt}Iteration 10:{col 16}log likelihood = {res}-200.52629{txt}  
+{res}{txt}Iteration 11:{col 16}log likelihood = {res}-200.52465{txt}  
+{res}{txt}Iteration 12:{col 16}log likelihood = {res}-200.52464{txt}  
+{res}
+{txt}ARIMA regression
+
+Sample:  {res}2019m2 - 2023m12                       {txt}Number of obs     = {res}        59
+                                                {txt}Wald chi2({res}3{txt})      =  {res}     1.44
+{txt}Log likelihood = {res}-200.5246                      {txt}Prob > chi2       =     {res}0.6952
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}DS12.       {col 14}{c |}{col 26}      OPG
+{col 1}  demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}demand_gwh   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}-.0260205{col 26}{space 2} .0447125{col 37}{space 1}   -0.58{col 46}{space 3}0.561{col 54}{space 4}-.1136554{col 67}{space 3} .0616145
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA         {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.1763162{col 26}{space 2} .1680874{col 37}{space 1}   -1.05{col 46}{space 3}0.294{col 54}{space 4}-.5057615{col 67}{space 3}  .153129
+{txt}{space 12} {c |}
+{space 10}ma {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.9999638{col 26}{space 2} 365.7056{col 37}{space 1}   -0.00{col 46}{space 3}0.998{col 54}{space 4}-717.7697{col 67}{space 3} 715.7698
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA12       {txt}{c |}
+{space 10}ma {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-1.000267{col 26}{space 2} 418.6194{col 37}{space 1}   -0.00{col 46}{space 3}0.998{col 54}{space 4}-821.4792{col 67}{space 3} 819.4786
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+      /sigma {c |}{col 14}{res}{space 2}  5.75022{col 26}{space 2} 1206.603{col 37}{space 1}    0.00{col 46}{space 3}0.498{col 54}{space 4}        0{col 67}{space 3} 2370.649
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 0 79}Note: The test of the variance against zero is one sided, and the two-sided confidence interval is truncated at zero.{p_end}
+
+{com}. estimates store model_D
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. * Compare AIC / BIC
+. estimates stats model_A model_B model_C model_D
+
+Akaike's information criterion and Bayesian information criterion
+
+{txt}{hline 13}{c TT}{hline 63}
+       Model {c |}        Obs  ll(null)  ll(model)      df         AIC        BIC
+{hline 13}{c +}{hline 63}
+{ralign 12:{stata estimates replay model_A:model_A}}{col 14}{c |}{res}{col 16}        71{col 27}        .{col 38}-264.3856{col 49}     3{col 58} 534.7711{col 69} 541.5591
+{txt}{ralign 12:{stata estimates replay model_B:model_B}}{col 14}{c |}{res}{col 16}        71{col 27}        .{col 38}-267.9483{col 49}     5{col 58} 545.8965{col 69} 557.2099
+{txt}{ralign 12:{stata estimates replay model_C:model_C}}{col 14}{c |}{res}{col 16}        59{col 27}        .{col 38}-205.9202{col 49}     4{col 58} 419.8403{col 69} 428.1505
+{txt}{ralign 12:{stata estimates replay model_D:model_D}}{col 14}{c |}{res}{col 16}        59{col 27}        .{col 38}-200.5246{col 49}     5{col 58} 411.0493{col 69}  421.437
+{txt}{hline 13}{c BT}{hline 63}
+{p 15 21 2}
+Note: N=Obs used in calculating BIC; see {helpb bic_note:[R] BIC note}.
+{p_end}
+
+{com}. 
+. * --- 7.3 Select best model (SARIMA(1,1,1)(1,1,0)12 expected lowest AIC) ---
+. * Restate chosen model for clarity
+. arima demand_gwh if train, arima(1,1,1) sarima(1,1,0,12)
+
+{txt}(setting optimization to BHHH)
+{res}{txt}Iteration 0:{col 16}log likelihood = {res}-214.86072{txt}  
+{res}{txt}Iteration 1:{col 16}log likelihood = {res}-210.69943{txt}  
+{res}{txt}Iteration 2:{col 16}log likelihood = {res}-207.25015{txt}  
+{res}{txt}Iteration 3:{col 16}log likelihood = {res}-207.16335{txt}  
+{res}{txt}Iteration 4:{col 16}log likelihood = {res} -206.2923{txt}  
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 5:{col 16}log likelihood = {res}-206.29196{txt}  (backed up)
+{res}{txt}Iteration 6:{col 16}log likelihood = {res}-205.97636{txt}  
+{res}{txt}Iteration 7:{col 16}log likelihood = {res}-205.92461{txt}  
+{res}{txt}Iteration 8:{col 16}log likelihood = {res}-205.92028{txt}  
+{res}{txt}Iteration 9:{col 16}log likelihood = {res}-205.92017{txt}  
+{res}{txt}Iteration 10:{col 16}log likelihood = {res}-205.92017{txt}  
+{res}
+{txt}ARIMA regression
+
+Sample:  {res}2019m2 - 2023m12                       {txt}Number of obs     = {res}        59
+                                                {txt}Wald chi2({res}3{txt})      =  {res}    42.74
+{txt}Log likelihood = {res}-205.9202                      {txt}Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}DS12.       {col 14}{c |}{col 26}      OPG
+{col 1}  demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}demand_gwh   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2}-.0274989{col 26}{space 2} .0465394{col 37}{space 1}   -0.59{col 46}{space 3}0.555{col 54}{space 4}-.1187144{col 67}{space 3} .0637166
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA         {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.1562202{col 26}{space 2} .1398302{col 37}{space 1}   -1.12{col 46}{space 3}0.264{col 54}{space 4}-.4302823{col 67}{space 3} .1178419
+{txt}{space 12} {c |}
+{space 10}ma {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-1.000001{col 26}{space 2} .2072832{col 37}{space 1}   -4.82{col 46}{space 3}0.000{col 54}{space 4}-1.406268{col 67}{space 3} -.593733
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA12       {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.4460864{col 26}{space 2} .1267698{col 37}{space 1}   -3.52{col 46}{space 3}0.000{col 54}{space 4}-.6945507{col 67}{space 3} -.197622
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+      /sigma {c |}{col 14}{res}{space 2} 7.434648{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 0 79}Note: The test of the variance against zero is one sided, and the two-sided confidence interval is truncated at zero.{p_end}
+
+{com}. estimates store model_best
+{txt}
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 8. IN-SAMPLE FORECAST ACCURACY (2024 holdout)
+. *
+. * Predict fitted values over full sample using training model
+. predict demand_fitted, dynamic(tm(2024m01)) y
+{txt}(13 missing values generated)
+
+{com}. 
+. * Compute residuals in test window
+. gen residual_test = demand_gwh - demand_fitted if  !train
+{txt}(72 missing values generated)
+
+{com}. 
+. * Accuracy metrics
+. gen abs_err  = abs(residual_test) if  !train
+{txt}(72 missing values generated)
+
+{com}. gen sq_err   = residual_test^2    if  !train
+{txt}(72 missing values generated)
+
+{com}. gen abs_pct  = abs(residual_test / demand_gwh) * 100 if  !train
+{txt}(72 missing values generated)
+
+{com}. 
+. summarize abs_err sq_err abs_pct if  !train
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 5}abs_err {c |}{res}         12    6.675644    4.793228   .0086975   13.87729
+{txt}{space 6}sq_err {c |}{res}         12    65.62467    69.56787   .0000756   192.5791
+{txt}{space 5}abs_pct {c |}{res}         12    1.920479     1.36748   .0024417   3.749867
+{txt}
+{com}. 
+. * Compute scalars
+. quietly summarize abs_err   if  !train; scalar MAE  = r(mean)
+{err}train; invalid name
+{txt}{search r(198), local:r(198);}
+
+end of do-file
+
+{search r(198), local:r(198);}
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. * Plot actual vs fitted
+. tsline demand_gwh demand_fitted, ///
+>     title("SARIMA Forecast vs Actual Demand (2024 Holdout)") ///
+>     ytitle("GWh") xtitle("Month") ///
+>     legend(label(1 "Actual") label(2 "SARIMA forecast")) ///
+>     lcolor(navy red) lwidth(medthick medthick) lpattern(solid dash) ///
+>     graphregion(color(white)) bgcolor(white)
+{res}{txt}
+{com}. graph export "fig8_forecast_vs_actual.png", replace width(1200)
+{txt}(note: file fig8_forecast_vs_actual.png not found)
+(file fig8_forecast_vs_actual.png written in PNG format)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 9. REFIT ON FULL DATA & FORECAST JAN–DEC 2025
+. *
+. drop demand_fitted residual_test abs_err sq_err abs_pct
+{txt}
+{com}. 
+. * Refit on all 84 months
+. arima demand_gwh, arima(1,1,1) sarima(1,1,0,12)
+
+{txt}(setting optimization to BHHH)
+{res}{txt}Iteration 0:{col 16}log likelihood = {res} -257.9866{txt}  
+{res}{txt}Iteration 1:{col 16}log likelihood = {res}-252.92781{txt}  
+{res}{txt}Iteration 2:{col 16}log likelihood = {res}-248.09924{txt}  
+{res}{txt}Iteration 3:{col 16}log likelihood = {res}-247.83484{txt}  
+{res}{txt}Iteration 4:{col 16}log likelihood = {res}-247.75409{txt}  
+{res}{txt}(switching optimization to BFGS)
+{res}{txt}Iteration 5:{col 16}log likelihood = {res}-247.73944{txt}  (backed up)
+{res}{txt}Iteration 6:{col 16}log likelihood = {res}-247.16574{txt}  
+{res}{txt}Iteration 7:{col 16}log likelihood = {res} -246.9113{txt}  
+{res}{txt}Iteration 8:{col 16}log likelihood = {res}-246.90267{txt}  
+{res}{txt}Iteration 9:{col 16}log likelihood = {res}-246.90052{txt}  
+{res}{txt}Iteration 10:{col 16}log likelihood = {res}-246.90047{txt}  
+{res}{txt}Iteration 11:{col 16}log likelihood = {res}-246.90047{txt}  
+{res}
+{txt}ARIMA regression
+
+Sample:  {res}2019m2 - 2024m12                       {txt}Number of obs     = {res}        71
+                                                {txt}Wald chi2({res}3{txt})      =  {res}    50.25
+{txt}Log likelihood = {res}-246.9005                      {txt}Prob > chi2       =     {res}0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}DS12.       {col 14}{c |}{col 26}      OPG
+{col 1}  demand_gwh{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      z{col 46}   P>|z|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}demand_gwh   {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .0071049{col 26}{space 2} .0314875{col 37}{space 1}    0.23{col 46}{space 3}0.821{col 54}{space 4}-.0546096{col 67}{space 3} .0688193
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA         {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.1791907{col 26}{space 2} .1262475{col 37}{space 1}   -1.42{col 46}{space 3}0.156{col 54}{space 4}-.4266313{col 67}{space 3} .0682498
+{txt}{space 12} {c |}
+{space 10}ma {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.9999994{col 26}{space 2}  .191021{col 37}{space 1}   -5.24{col 46}{space 3}0.000{col 54}{space 4}-1.374394{col 67}{space 3} -.625605
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ARMA12       {txt}{c |}
+{space 10}ar {c |}
+{space 9}L1. {c |}{col 14}{res}{space 2}-.4896374{col 26}{space 2} .1184963{col 37}{space 1}   -4.13{col 46}{space 3}0.000{col 54}{space 4}-.7218859{col 67}{space 3}-.2573889
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+      /sigma {c |}{col 14}{res}{space 2} 7.373785{col 26}{space 2}        .{col 37}{space 1}       .{col 46}{space 3}    .{col 54}{space 4}        .{col 67}{space 3}        .
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 0 79}Note: The test of the variance against zero is one sided, and the two-sided confidence interval is truncated at zero.{p_end}
+
+{com}. 
+. * Extend dataset to include 12 future periods
+. tsappend, add(12)
+{txt}
+{com}. 
+. * Dynamic forecast from Jan 2025
+. predict demand_forecast, dynamic(tm(2025m01)) y
+{txt}(13 missing values generated)
+
+{com}. predict demand_se,       dynamic(tm(2025m01)) rmse
+{err}option {bf:dynamic()} not allowed
+{txt}{search r(198), local:r(198);}
+
+end of do-file
+
+{search r(198), local:r(198);}
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 10. EXPORT FORECAST TABLE
+. *
+. preserve
+{txt}
+{com}.     keep if t >= tm(2025m01)
+{txt}(84 observations deleted)
+
+{com}.     keep t demand_forecast ci_lower ci_upper demand_se
+{err}variable {bf}ci_lower{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{search r(111), local:r(111);}
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 11. GENERATION FORECAST (proportional to demand, constrained by capacity)
+. *
+. * Simple approach: forecast generation as adequacy_ratio * forecast demand
+. * (adequacy_ratio from training period)
+. quietly summarize adequacy_ratio if train
+{txt}
+{com}. scalar mean_adequacy = r(mean)
+{txt}
+{com}. 
+. gen generation_forecast = mean_adequacy * demand_forecast if t >= tm(2025m01)
+{txt}(84 missing values generated)
+
+{com}. replace generation_forecast = min(generation_forecast, capacity_mw * 24 * 30 / 1000)
+{txt}(84 real changes made)
+
+{com}. label var generation_forecast "Forecasted generation (GWh)"
+{txt}
+{com}. 
+. tsline demand_forecast generation_forecast if t >= tm(2025m01), ///
+>     title("Malawi 2025 Forecasted Demand vs Generation") ///
+>     ytitle("GWh") xtitle("Month") ///
+>     legend(label(1 "Demand forecast") label(2 "Generation forecast")) ///
+>     lcolor(navy red) lwidth(medthick medthick) ///
+>     graphregion(color(white)) bgcolor(white)
+{res}{txt}
+{com}. graph export "fig10_gen_demand_forecast_2025.png", replace width(1200)
+{txt}(file fig10_gen_demand_forecast_2025.png written in PNG format)
+
+{com}. 
+{txt}end of do-file
+
+{com}. do "C:\Users\mary\AppData\Local\Temp\STD01000000.tmp"
+{txt}
+{com}. *
+. * 12. KPI DASHBOARD OUTPUT (for reporting)
+. *
+. di ""
+{res}
+{txt}
+{com}. di "==========================================="
+{res}===========================================
+{txt}
+{com}. di " KPI MONITORING SUMMARY — 2018–2024"
+{res} KPI MONITORING SUMMARY — 2018–2024
+{txt}
+{com}. di "==========================================="
+{res}===========================================
+{txt}
+{com}. tabstat generation_gwh demand_gwh unmet_demand_gwh adequacy_ratio ///
+>         capacity_util_pct access_gap_pct reliability_idx ///
+>         hydro_share_pct system_losses_pct load_factor_pct, ///
+>         stat(mean sd min max) col(stat) format(%8.2f)
+
+{txt}{ralign 12:variable} {...}
+{c |}      mean        sd       min       max
+{hline 13}{c +}{hline 40}
+{ralign 12:generation~h} {...}
+{c |}{...}
+  {res}  290.69     36.05    222.84    352.49
+{txt}{ralign 12:demand_gwh} {...}
+{c |}{...}
+  {res}  329.31     17.62    292.40    371.00
+{txt}{ralign 12:unmet_dema~h} {...}
+{c |}{...}
+  {res}   39.23     31.75      0.00     93.85
+{txt}{ralign 12:adequacy_r~o} {...}
+{c |}{...}
+  {res}    0.88      0.10      0.71      1.03
+{txt}{ralign 12:capacity_u~t} {...}
+{c |}{...}
+  {res}   90.93     11.28     69.71    110.26
+{txt}{ralign 12:access_gap~t} {...}
+{c |}{...}
+  {res}   11.91      9.66      0.00     29.25
+{txt}{ralign 12:reliabilit~x} {...}
+{c |}{...}
+  {res}   88.09      9.66     70.75    100.00
+{txt}{ralign 12:hydro_shar~t} {...}
+{c |}{...}
+  {res}   93.01      1.73     88.66     96.14
+{txt}{ralign 12:system_los~t} {...}
+{c |}{...}
+  {res}   18.39      2.09     15.02     21.97
+{txt}{ralign 12:load_facto~t} {...}
+{c |}{...}
+  {res}   53.77      6.13     42.17     63.83
+{txt}{hline 13}{c BT}{hline 40}
+
+{com}. 
+. *
+. * 13. SAVE CLEAN DATASET
+. *
+. save "energy_clean.dta", replace
+{txt}file energy_clean.dta saved
+
+{com}. 
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\mary\Documents\energy_forecasting\energy_forecasting_log.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}21 Jun 2026, 13:27:26
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
