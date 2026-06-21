@@ -1,4 +1,4 @@
-# 🇲🇼 Malawi Energy Demand Forecasting & KPI Monitoring
+# Energy Demand Forecasting & KPI Monitoring
 
 > **Portfolio project demonstrating competency in monitoring & evaluation, time series forecasting, and structured KPI reporting — applied to Malawi's national electricity sector.**
 
@@ -61,7 +61,6 @@ energy-forecasting-malawi/
 │
 ├── outputs/
 │   ├── kpi_annual_summary.csv         ← Annual KPI monitoring table
-│   ├── forecast_2025_monthly.csv      ← Monthly demand forecast with 95% CIs
 │   ├── malawi_energy_clean.dta        ← Validated Stata dataset
 │   └── energy_forecasting_log.smcl   ← Full Stata output log
 │
@@ -342,15 +341,15 @@ All 10 figures, both CSV outputs, the clean `.dta` file, and the full Stata log 
 |---|---|
 | Monitoring & Evaluation (M&E) | CDS construction, KPI framework design, structured periodic reporting |
 | Time series forecasting | SARIMA modelling with seasonal differencing, AIC/BIC model selection |
-| Stationarity testing | ADF test, Zivot-Andrews structural break test |
+| Stationarity testing | ADF test |
 | Autocorrelation diagnostics | ACF, PACF analysis for AR/MA order identification |
 | Forecast accuracy evaluation | MAE, RMSE, MAPE on 2024 holdout window |
 | Data validation & cleaning | Completeness checks, range validation, consistency verification |
-| Stata 17 | `tsset`, `arima`, `dfuller`, `zandrews`, `ac`, `pac`, `tsappend`, `collapse`, `export delimited` |
+| Stata 17 | `tsset`, `arima`, `dfuller`, `ac`, `pac`, `tsappend`, `collapse`, `export delimited` |
 | Statistical reporting | Annual KPI tables, monthly forecast tables with confidence intervals |
 | Energy sector KPIs | Generation adequacy, capacity utilisation, access gap, hydro dependency, reliability index |
 | Data storytelling | Translating model outputs into actionable M&E triggers for management |
 
 ---
 
-*This project was developed as part of an application for the position of Assistant Monitoring Officer (Grade EG7) at Electricity Generation Company (Malawi) Limited (EGENCO). All data is simulated for demonstration purposes and does not represent actual EGENCO operational figures.*
+*This project was developed as part of a Data Analytics Portfolio Project. All data is simulated for demonstration purposes and does not represent actual EGENCO operational figures.*
