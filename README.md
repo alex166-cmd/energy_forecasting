@@ -1,6 +1,6 @@
 # Energy Demand Forecasting & KPI Monitoring
 
-> **Portfolio project demonstrating competency in monitoring & evaluation, time series forecasting, and structured KPI reporting — applied to Malawi's national electricity sector.**
+> **Portfolio project demonstrating competency in monitoring & evaluation, time series forecasting, and structured KPI reporting, applied to Malawi's national electricity sector.**
 
 **Author:** Alex Maseko &nbsp;|&nbsp; BSc Applied Statistics (Credit) &nbsp;|&nbsp; MEAL Certified — HLA & Catholic Relief Services  
 **Tool:** Stata 17 &nbsp;|&nbsp; **Data period:** January 2018 – December 2024 (84 months)  
